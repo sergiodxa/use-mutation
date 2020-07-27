@@ -12,9 +12,9 @@ interface Options<Input, Data, Error> {
    * It can be an async or sync function, in both cases if it returns a function
    * it will keep it as a way to rollback the changed applied inside onMutate.
    */
-  onMutate?(
-    input: Input
-  ): Promise<rollbackFn | undefined> | rollbackFn | undefined;
+  onMutate?(params: {
+    input: Input;
+  }): Promise<rollbackFn | void> | rollbackFn | void;
   /**
    * A function to be executed after the mutation resolves successfully.
    *
@@ -22,13 +22,17 @@ interface Options<Input, Data, Error> {
    *
    * If a Promise is returned, it will be awaited before proceeding.
    */
-  onSuccess?(data: Data): Promise<void> | void;
+  onSuccess?(params: { data: Data; input: Input }): Promise<void> | void;
   /**
    * A function to be executed after the mutation failed to execute.
    *
    * If a Promise is returned, it will be awaited before proceeding.
    */
-  onFailure?(error: Error, rollback: rollbackFn): Promise<void> | void;
+  onFailure?(params: {
+    error: Error;
+    rollback: rollbackFn | void;
+    input: Input;
+  }): Promise<void> | void;
   /**
    * A function to be executed after the mutation has resolves, either
    * successfully or as failure.
@@ -39,9 +43,14 @@ interface Options<Input, Data, Error> {
    * If a Promise is returned, it will be awaited before proceeding.
    */
   onSettled?(
-    error?: Error,
-    data?: Data,
-    rollback?: rollbackFn
+    params:
+      | { status: 'success'; data: Data; input: Input }
+      | {
+          status: 'failure';
+          error: Error;
+          rollback: rollbackFn | void;
+          input: Input;
+        }
   ): Promise<void> | void;
   /**
    * If defined as `true`, a failure in the mutation will cause the `mutate`
@@ -134,7 +143,7 @@ export default function useMutation<Input = any, Data = any, Error = any>(
     latestMutation.current = mutation;
 
     safeDispatch({ type: 'MUTATE' });
-    const rollback = (await onMutate(input)) ?? noop;
+    const rollback = (await onMutate({ input })) ?? noop;
 
     try {
       const data = await getMutationFn()(input);
@@ -143,19 +152,24 @@ export default function useMutation<Input = any, Data = any, Error = any>(
         safeDispatch({ type: 'SUCCESS', data });
       }
 
-      await onSuccess(data);
-      await (config.onSuccess ?? noop)(data);
+      await onSuccess({ data, input });
+      await (config.onSuccess ?? noop)({ data, input });
 
-      await onSettled(undefined, data);
-      await (config.onSettled ?? noop)(undefined, data);
+      await onSettled({ status: 'success', data, input });
+      await (config.onSettled ?? noop)({ status: 'success', data, input });
 
       return data;
     } catch (error) {
-      await onFailure(error, rollback);
-      await (config.onFailure ?? noop)(error, rollback);
+      await onFailure({ error, rollback, input });
+      await (config.onFailure ?? noop)({ error, rollback, input });
 
-      await onSettled(error, undefined, rollback);
-      await (config.onSettled ?? noop)(error, undefined, rollback);
+      await onSettled({ status: 'failure', error, input, rollback });
+      await (config.onSettled ?? noop)({
+        status: 'failure',
+        error,
+        input,
+        rollback,
+      });
 
       if (latestMutation.current === mutation) {
         safeDispatch({ type: 'FAILURE', error });

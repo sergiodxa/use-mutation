@@ -53,10 +53,17 @@ describe(useMutation, () => {
     await screen.findByText('running');
 
     expect(mutationFn).toHaveBeenCalledWith('test-1');
-    expect(onMutate).toHaveBeenCalledWith('test-1');
-    expect(onSuccess).toHaveBeenCalledWith('result-1');
+    expect(onMutate).toHaveBeenCalledWith({ input: 'test-1' });
+    expect(onSuccess).toHaveBeenCalledWith({
+      data: 'result-1',
+      input: 'test-1',
+    });
     expect(onFailure).not.toHaveBeenCalled();
-    expect(onSettled).toHaveBeenCalledWith(undefined, 'result-1');
+    expect(onSettled).toHaveBeenCalledWith({
+      status: 'success',
+      data: 'result-1',
+      input: 'test-1',
+    });
   });
 
   test('should call all the correct function for a failure mutation', async () => {
@@ -82,9 +89,18 @@ describe(useMutation, () => {
     await screen.findByText('running');
 
     expect(mutationFn).toHaveBeenCalledWith('test-1');
-    expect(onMutate).toHaveBeenCalledWith('test-1');
+    expect(onMutate).toHaveBeenCalledWith({ input: 'test-1' });
     expect(onSuccess).not.toHaveBeenCalled();
-    expect(onFailure).toHaveBeenCalledWith('reason-1', noop);
-    expect(onSettled).toHaveBeenCalledWith('reason-1', undefined, noop);
+    expect(onFailure).toHaveBeenCalledWith({
+      error: 'reason-1',
+      rollback: noop,
+      input: 'test-1',
+    });
+    expect(onSettled).toHaveBeenCalledWith({
+      status: 'failure',
+      error: 'reason-1',
+      input: 'test-1',
+      rollback: noop,
+    });
   });
 });

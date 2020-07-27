@@ -41,23 +41,26 @@ Use your function with `useMutation`
 function CommentForm({ authorId }) {
   const [comment, setComment] = React.useState('');
   const [mutate, { status }] = useMutation(createComment, {
-    onMutate(input) {
+    onMutate({ input }) {
       // do something before the mutation run
       return () => {
         // rollback changes if the mutation failed
       };
     },
-    onSuccess(result) {
+    onSuccess({ data, input }) {
       // do something once the mutation succeeded
     },
-    onFailure(reason, rollback) {
+    onFailure({ error, rollback, input }) {
       // do something once the mutation failed
     },
-    onSettled(reason, result, rollback) {
-      if (reason) {
-        // do something if the mutation failed
-      } else {
-        // do something if the mutation succeeded
+    onSettled({ status, error, data, rollback, input }) {
+      switch (status) {
+        case 'success': {
+          // do something if the mutation succeeded
+        }
+        case 'failure': {
+          // do something if the mutation failed
+        }
       }
     },
   });
@@ -86,11 +89,15 @@ function createComment(input) {
 
 function useCreateComment() {
   return useMutation(createComment, {
-    onMutate(input) {
+    onMutate({ input }) {
       const oldData = cache.get('comment-list');
       // optimistically update the data before your mutation is run
       mutate('comment-list', current => current.concat(input), false);
       return () => mutate('comment-list', oldData, false); // revalidate if it failed
+    },
+
+    onFailure({ status, rollback }) {
+      if (status === 'failure' && rollback) rollback();
     },
   });
 }
@@ -140,25 +147,25 @@ const promise = mutate(input, {
   - A function to be executed before the mutation runs.
   - It receives the same input as the mutate function.
   - It can be an async or sync function, in both cases if it returns a function it will keep it as a way to rollback the changed applied inside onMutate.
-- `onMutate?(input: Input): Promise<rollbackFn | undefined> | rollbackFn | undefined`
+- `onMutate?({ input: Input }): Promise<rollbackFn | undefined> | rollbackFn | undefined`
   - Optional
   - A function to be executed before the mutation runs.
   - It receives the same input as the mutate function.
   - It can be an async or sync function, in both cases if it returns a function.
   - it will keep it as a way to rollback the changed applied inside `onMutate`
-- `onSuccess?(result: Data): Promise<void> | void`
+- `onSuccess?({ data: Data, input: Input }): Promise<void> | void`
   - Optional
   - A function to be executed after the mutation resolves successfully.
   - It receives the result of the mutation.
   - If a Promise is returned, it will be awaited before proceeding.
-- `onFailure?(reason: Error, rollback: rollbackFn): Promise<void> | void`
+- `onFailure?({ error: Error, rollback: rollbackFn, input: Input }): Promise<void> | void`
   - Optional
   - A function to be executed after the mutation failed to execute.
   - If a Promise is returned, it will be awaited before proceeding.
-- `onSettled?(reason?: Error, result?: Data, rollback?: rollbackFn): Promise<void> | void`
+- `onSettled?({ status: 'success' | 'failure', error?: Error, data?: Data, rollback?: rollbackFn, input: Input}): Promise<void> | void`
   - Optional
   - A function to be executed after the mutation has resolves, either successfully or as failure.
-  - This function receives the reason of the error or the result of the mutation. It follow the normal Node.js callback style.
+  - This function receives the error or the result of the mutation.
   - If a Promise is returned, it will be awaited before proceeding.
 - `throwOnFailure?: boolean`
   - Optional
