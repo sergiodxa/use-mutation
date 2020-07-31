@@ -1,8 +1,30 @@
-# 🧬 useMutation
+<div align="center">
+
+<h1>
+  useMutation
+</h1>
+
+<a href="https://www.joypixels.com/profiles/emoji/dna">
+  <img
+    height="80"
+    width="80"
+    alt="dna"
+    src="https://raw.githubusercontent.com/sergiodxa/use-mutatino/master/other/logo.png"
+  />
+</a>
+
+<p>
+  Run functions with side-effects safely in React
+</p>
+
+<br />
+
+</div>
+
+<hr />
 
 ![CI](https://github.com/sergiodxa/use-mutation/workflows/CI/badge.svg) ![Publish](https://github.com/sergiodxa/use-mutation/workflows/Publish/badge.svg)
 
-Run functions with side-effects safely in React
 
 Specially useful to run requests against an API, and combined with [SWR](https://swr.vercel.app).
 
