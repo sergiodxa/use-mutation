@@ -14,7 +14,7 @@
 </a>
 
 <p>
-  Run functions with side-effects safely in React
+  Run side-effects safely in React
 </p>
 
 </div>
