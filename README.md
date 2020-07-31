@@ -117,7 +117,7 @@ function useCreateComment() {
       const oldData = cache.get('comment-list');
       // optimistically update the data before your mutation is run
       mutate('comment-list', current => current.concat(input), false);
-      return () => mutate('comment-list', oldData, false); // revalidate if it failed
+      return () => mutate('comment-list', oldData, false); // rollback if it failed
     },
 
     onFailure({ status, rollback }) {
