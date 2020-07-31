@@ -9,7 +9,7 @@
     height="80"
     width="80"
     alt="dna"
-    src="https://raw.githubusercontent.com/sergiodxa/use-mutatino/master/other/logo.png"
+    src="https://raw.githubusercontent.com/sergiodxa/use-mutation/master/other/logo.png"
   />
 </a>
 
