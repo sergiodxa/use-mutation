@@ -1,25 +1,8 @@
 <div align="center">
 
-<h1>
-  useMutation
-</h1>
-
-<a href="https://www.joypixels.com/profiles/emoji/dna">
-  <img
-    height="80"
-    width="80"
-    alt="dna"
-    src="https://raw.githubusercontent.com/sergiodxa/use-mutation/master/other/logo.png"
-  />
-</a>
-
-<p>
-  Run side-effects safely in React
-</p>
+![🧬 useMutation - Run side-effects safely in React](other/og.png)
 
 </div>
-
-<hr />
 
 ![CI](https://github.com/sergiodxa/use-mutation/workflows/CI/badge.svg) ![Publish](https://github.com/sergiodxa/use-mutation/workflows/Publish/badge.svg)
 
