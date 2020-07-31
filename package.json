@@ -1,5 +1,6 @@
 {
   "name": "use-mutation",
+  "description": "Run functions with side-effects safely in React",
   "version": "2.0.0",
   "license": "MIT",
   "author": "Sergio Xalambrí",
