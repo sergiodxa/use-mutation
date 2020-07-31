@@ -1,6 +1,10 @@
-# useMutation ![CI](https://github.com/sergiodxa/use-mutation/workflows/CI/badge.svg) ![Publish](https://github.com/sergiodxa/use-mutation/workflows/Publish/badge.svg)
+# 🧬 useMutation
 
-Run function which cause a side-effect, specially useful to run requests against an API, inside a React component.
+![CI](https://github.com/sergiodxa/use-mutation/workflows/CI/badge.svg) ![Publish](https://github.com/sergiodxa/use-mutation/workflows/Publish/badge.svg)
+
+Run functions with side-effects safely in React
+
+Specially useful to run requests against an API, and combined with [SWR](https://swr.vercel.app).
 
 ## Usage
 
