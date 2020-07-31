@@ -17,8 +17,6 @@
   Run functions with side-effects safely in React
 </p>
 
-<br />
-
 </div>
 
 <hr />
