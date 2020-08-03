@@ -53,6 +53,6 @@
     "react": ">=16"
   },
   "dependencies": {
-    "use-safe-callback": "^1.0.1"
+    "use-safe-callback": "^1.0.2"
   }
 }

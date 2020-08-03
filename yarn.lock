@@ -5908,10 +5908,10 @@ urix@^0.1.0:
   resolved "https://registry.yarnpkg.com/urix/-/urix-0.1.0.tgz#da937f7a62e21fec1fd18d49b35c2935067a6c72"
   integrity sha1-2pN/emLiH+wf0Y1Js1wpNQZ6bHI=
 
-use-safe-callback@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/use-safe-callback/-/use-safe-callback-1.0.1.tgz#fae5153e90bb141d2b1f2bb9681c3ae16b352ab4"
-  integrity sha512-ZylzCEsMLKadvKMgLa6HydidcScN5IfM9EYE6ecpEu+jvaihSu9IlYj9fwR673X9WP4Os9IQTOcHkXoM2tpXvg==
+use-safe-callback@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/use-safe-callback/-/use-safe-callback-1.0.2.tgz#1e112c144bccccb39d308ac983f4589ea113bed5"
+  integrity sha512-RVeoyxgjJNfu9baNwulBM+HuPQGlcE1MJtrA1w50B5Hd0tyeKvrBIPdCfRx4Trrrxe34M6qRTys/bfpqsKRcyA==
 
 use@^3.1.0:
   version "3.1.1"
