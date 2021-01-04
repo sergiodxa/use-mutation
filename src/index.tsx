@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Reducer, useCallback, useReducer, useRef } from 'react';
 import useSafeCallback from 'use-safe-callback';
 
 type rollbackFn = () => void;
@@ -74,9 +74,9 @@ function noop() {}
  * running again the effect or recreating the callback.
  */
 function useGetLatest<Value>(value: Value): () => Value {
-  const ref = React.useRef<Value>(value);
+  const ref = useRef<Value>(value);
   ref.current = value;
-  return React.useCallback(() => ref.current, []);
+  return useCallback(() => ref.current, []);
 }
 
 /**
@@ -102,8 +102,8 @@ export default function useMutation<Input = any, Data = any, Error = any>(
     | { type: 'SUCCESS'; data: Data }
     | { type: 'FAILURE'; error: Error };
 
-  const [{ status, data, error }, unsafeDispatch] = React.useReducer<
-    React.Reducer<State, Action>
+  const [{ status, data, error }, unsafeDispatch] = useReducer<
+    Reducer<State, Action>
   >(
     function reducer(_, action) {
       if (action.type === 'RESET') {
@@ -124,7 +124,7 @@ export default function useMutation<Input = any, Data = any, Error = any>(
   );
 
   const getMutationFn = useGetLatest(mutationFn);
-  const latestMutation = React.useRef(0);
+  const latestMutation = useRef(0);
 
   const safeDispatch = useSafeCallback(unsafeDispatch);
 
@@ -132,7 +132,7 @@ export default function useMutation<Input = any, Data = any, Error = any>(
    * Run your mutation function, this function receives an input value and pass
    * it directly to your mutation function.
    */
-  const mutate = React.useCallback(async function mutate(
+  const mutate = useCallback(async function mutate(
     input: Input,
     config: Omit<
       Options<Input, Data, Error>,
@@ -182,7 +182,7 @@ export default function useMutation<Input = any, Data = any, Error = any>(
   },
   []);
 
-  const reset = React.useCallback(function reset() {
+  const reset = useCallback(function reset() {
     safeDispatch({ type: 'RESET' });
   }, []);
 
