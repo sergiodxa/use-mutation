@@ -3,7 +3,7 @@ import useSafeCallback from 'use-safe-callback';
 
 type rollbackFn = () => void;
 
-interface Options<Input, Data, Error> {
+export interface Options<Input, Data, Error> {
   /**
    * A function to be executed before the mutation runs.
    *
