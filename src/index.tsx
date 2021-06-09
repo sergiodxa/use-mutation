@@ -64,7 +64,7 @@ export interface Options<Input, Data, Error> {
   useErrorBoundary?: boolean;
 }
 
-type Status = 'idle' | 'running' | 'success' | 'failure';
+export type Status = 'idle' | 'running' | 'success' | 'failure';
 
 function noop() {}
 
@@ -78,6 +78,10 @@ function useGetLatest<Value>(value: Value): () => Value {
   ref.current = value;
   return useCallback(() => ref.current, []);
 }
+
+export type Reset = () => void;
+
+export type MutationResult<Input = any, Data = any, Error = any> = [(input: Input) => Promise<Data | undefined>, { status: Status, data?: Data, error?: Error, reset: Reset }];
 
 /**
  * Hook to run async function which cause a side-effect, specially useful to
@@ -93,7 +97,7 @@ export default function useMutation<Input = any, Data = any, Error = any>(
     throwOnFailure = false,
     useErrorBoundary = false,
   }: Options<Input, Data, Error> = {}
-) {
+): MutationResult<Input, Data, Error> {
   type State = { status: Status; data?: Data; error?: Error };
 
   type Action =
@@ -188,13 +192,5 @@ export default function useMutation<Input = any, Data = any, Error = any>(
 
   if (useErrorBoundary && error) throw error;
 
-  return ([mutate, { status, data, error, reset }] as unknown) as [
-    typeof mutate,
-    {
-      status: Status;
-      data?: Data;
-      error?: Error;
-      reset: typeof reset;
-    }
-  ];
+  return ([mutate, { status, data, error, reset }]);
 }
