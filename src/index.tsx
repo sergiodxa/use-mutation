@@ -81,7 +81,7 @@ function useGetLatest<Value>(value: Value): () => Value {
 
 export type Reset = () => void;
 
-export type MutationResult<Input = any, Data = any, Error = any> = [(input: Input) => Promise<Data | undefined>, { status: Status, data?: Data, error?: Error, reset: Reset }];
+export type MutationResult<Input, Data, Error> = [(input: Input) => Promise<Data | undefined>, { status: Status, data?: Data, error?: Error, reset: Reset }];
 
 /**
  * Hook to run async function which cause a side-effect, specially useful to
@@ -192,5 +192,5 @@ export default function useMutation<Input = any, Data = any, Error = any>(
 
   if (useErrorBoundary && error) throw error;
 
-  return ([mutate, { status, data, error, reset }]);
+  return [mutate, { status, data, error, reset }];
 }
