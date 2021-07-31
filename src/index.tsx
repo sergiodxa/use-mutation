@@ -1,7 +1,7 @@
 import { Reducer, useCallback, useReducer, useRef } from 'react';
 import useSafeCallback from 'use-safe-callback';
 
-type rollbackFn = () => void;
+export type rollbackFn = () => void;
 
 export interface Options<Input, Data, Error> {
   /**
@@ -81,7 +81,10 @@ function useGetLatest<Value>(value: Value): () => Value {
 
 export type Reset = () => void;
 
-export type MutationResult<Input, Data, Error> = [(input: Input) => Promise<Data | undefined>, { status: Status, data?: Data, error?: Error, reset: Reset }];
+export type MutationResult<Input, Data, Error> = [
+  (input: Input) => Promise<Data | undefined>,
+  { status: Status; data?: Data; error?: Error; reset: Reset }
+];
 
 /**
  * Hook to run async function which cause a side-effect, specially useful to
