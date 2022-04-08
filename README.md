@@ -103,8 +103,8 @@ function useCreateComment() {
       return () => mutate('comment-list', oldData, false); // rollback if it failed
     },
 
-    onFailure({ status, rollback }) {
-      if (status === 'failure' && rollback) rollback();
+    onFailure({ rollback }) {
+      if (rollback) rollback();
     },
   });
 }
